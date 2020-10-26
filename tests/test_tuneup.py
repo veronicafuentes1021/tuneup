@@ -3,7 +3,7 @@ Unit test cases for tuneup.py
 Students should not modify this file.
 """
 
-__author__ = "madarp"
+__author__ = "Veronica Fuentes and Daniel Lomelino and Bethsheba"
 
 import sys
 import unittest
@@ -22,6 +22,7 @@ sys.dont_write_bytecode = True
 PKG_NAME = 'tuneup'
 
 dup_list = ["1990\tJacob's Ladder", '1990\tThe Two Jakes', '1991\tHouse Party 2', '1992\tThe Distinguished Gentleman', '1994\tBlown Away', '1995\tMoney Train', '1999\tAmerican Pie', '2010\tEat Pray Love', '2014\tBig Hero 6']
+
 
 def function_timer(func, param):
     """Our own timeit helper function"""
@@ -47,14 +48,14 @@ class TestTuneup(unittest.TestCase):
             actual_t, timeit.Timer,
             "timeit_helper() should return the timeit.Timer object instance"
             )
-        # Checks if the setup= part is correct    
+        # Checks if the setup= part is correct
         self.assertIn(
             f"from {PKG_NAME} import {func_name}", actual_t.src,
             "The timeit.Timer setup is incorrect"
             )
         # Checks if the stmt= part is correct
         self.assertIn(
-            f"find_duplicate_movies('movies.txt')", actual_t.src,
+            "find_duplicate_movies('movies.txt')", actual_t.src,
             "The timeit.Timer stmt is incorrect"
         )
 
@@ -68,7 +69,7 @@ class TestTuneup(unittest.TestCase):
             callable(decorated),
             "The decorator function must return a callable"
             )
-        # call the decorated function.  Is it printing any pStats?    
+        # call the decorated function.  Is it printing any pStats?
         buffer = StringIO()
         with redirect_stdout(buffer):
             decorated()
@@ -84,7 +85,8 @@ class TestTuneup(unittest.TestCase):
 
     def test_optimized_find_duplicate_movies(self):
         """Checking the optimized algorithm"""
-        opt_result = sorted(self.module.optimized_find_duplicate_movies("movies.txt"))
+        opt_result = sorted(
+            self.module.optimized_find_duplicate_movies("movies.txt"))
         self.assertIsInstance(
             opt_result, list,
             "The function is not returning a list"
@@ -96,8 +98,10 @@ class TestTuneup(unittest.TestCase):
 
     def test_improvement_factor(self):
         """Checking if improvement is greater than 500x"""
-        orig_time = function_timer(self.module.find_duplicate_movies, "movies.txt")
-        optimized_time = function_timer(self.module.optimized_find_duplicate_movies, "movies.txt")
+        orig_time = function_timer(
+            self.module.find_duplicate_movies, "movies.txt")
+        optimized_time = function_timer(
+            self.module.optimized_find_duplicate_movies, "movies.txt")
         improvement = orig_time / optimized_time
         print(f"Improvement factor is {improvement:.1f}x")
         self.assertGreater(
@@ -109,7 +113,7 @@ class TestTuneup(unittest.TestCase):
         """Checking for PEP8/flake8 compliance"""
         result = subprocess.run(['flake8', self.module.__file__])
         self.assertEqual(result.returncode, 0)
-    
+
     def test_author_string(self):
         """Checking for author string"""
         self.assertIsNotNone(self.module.__author__)
