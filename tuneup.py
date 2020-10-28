@@ -22,7 +22,7 @@ def profile(func):
         result = func(*args, **kwargs)
         profile.disable()
         profilestats = pstats.Stats(profile).sort_stats("cumulative")
-        profilestats.print_stats()
+        profilestats.print_stats(10)
         return result
     return wrapper
 
@@ -60,7 +60,9 @@ def optimized_find_duplicate_movies(src):
     movie_dict = {}
     duplicates = []
     for movie in movies:
-        if movie in movie_dict and movie not in duplicates:
+        if movie not in movie_dict:
+            movie_dict[movie] = 1
+        else:
             duplicates.append(movie)
     return duplicates
 
@@ -68,7 +70,7 @@ def optimized_find_duplicate_movies(src):
 def timeit_helper(func_name, func_param):
     """Part A: Obtain some profiling measurements using timeit"""
     assert isinstance(func_name, str)
-    stmt = f"{func_name} ('{func_param}')"
+    stmt = f"{func_name}('{func_param}')"
     setup = f"from {__name__} import {func_name}"
     t = timeit.Timer(stmt=stmt, setup=setup)
     runs_per_repeat = 3
