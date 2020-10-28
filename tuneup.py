@@ -6,7 +6,7 @@ Use the timeit and cProfile libraries to find bad code.
 
 """
 
-__author__ = "Veronica Fuentes"
+__author__ = "Veronica Fuentes and Daniel Lomelino"
 
 import cProfile
 import pstats
